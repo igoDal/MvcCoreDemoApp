@@ -7,7 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MvcCore.Data;
+using MvcCore.Models;
+using MvcCore.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,12 +28,15 @@ namespace MvcCore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
+            services.AddDbContext<TaskManagerContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("TaskManagerDatabase")));
+
+            services.AddTransient<ITaskRepository, TaskRepository>();
+
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<TaskManagerContext>();
             services.AddRazorPages();
         }
 
@@ -56,13 +60,13 @@ namespace MvcCore
             app.UseRouting();
 
             app.UseAuthentication();
-            app.UseAuthorization();
+            //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Task}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
         }
