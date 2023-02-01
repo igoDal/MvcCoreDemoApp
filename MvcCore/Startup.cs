@@ -48,6 +48,11 @@ namespace MvcCore
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
+            else if (env.IsProduction())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
+            }
             else
             {
                 app.UseExceptionHandler("/Home/Error");

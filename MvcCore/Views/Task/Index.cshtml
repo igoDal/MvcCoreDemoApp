@@ -3,8 +3,22 @@
 @{
     ViewData["Title"] = "Index";
 }
-
-<h1>Task list</h1>
+@{
+    string header = "";
+    switch (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"))
+    {
+        case "Development":
+            header = "Development Task List";
+            break;
+        case "Production":
+            header = "Production Task List";
+            break;
+        default:
+            header = "Task list";
+            break;
+    }
+}
+<h1>@header</h1>
 
 <p>
     <a asp-action="Create">Add new task</a>
