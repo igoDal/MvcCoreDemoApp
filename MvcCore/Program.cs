@@ -14,6 +14,7 @@ namespace MvcCore
     {
         public static void Main(string[] args)
         {
+
             var configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .Build();
@@ -21,8 +22,14 @@ namespace MvcCore
             Log.Logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(configuration)
                 .CreateLogger();
-
-            CreateHostBuilder(args).Build().Run();
+            try
+            {
+                CreateHostBuilder(args).Build().Run();
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Application failed to start correctly.");
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
