@@ -47,13 +47,18 @@ namespace MvcCore
             {
                 config.UseInMemoryDatabase("Memory");
             });
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<TaskManagerContext>()
+                .AddDefaultTokenProviders();
+
             //-- END
 
             services.AddTransient<ITaskRepository, TaskRepository>();
 
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<TaskManagerContext>();
+            //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //    .AddEntityFrameworkStores<TaskManagerContext>();
             services.AddRazorPages();
         }
 

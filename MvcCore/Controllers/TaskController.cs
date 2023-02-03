@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MvcCore.Models;
 using MvcCore.Repositories;
@@ -13,9 +14,17 @@ namespace MvcCore.Controllers
     public class TaskController : Controller
     {
         private readonly ITaskRepository _taskRepository;
+        private readonly UserManager<IdentityUser> _userManager;
+
         public TaskController(ITaskRepository taskRepository)
         {
             _taskRepository = taskRepository;
+        }
+
+        //constructor for inMemoryDb
+        public TaskController(UserManager<IdentityUser> userManager)
+        {
+            _userManager = userManager;
         }
         // GET: Task
         public ActionResult Index()
@@ -89,29 +98,49 @@ namespace MvcCore.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Authenticate()
-        {
-            var appClaims = new List<Claim>()
-            {
-                new Claim(ClaimTypes.Name, "Igor"),
-                new Claim(ClaimTypes.Email, "igor@igor.pl"),
-                new Claim("App.Says", "Welcome, Igor. You're verified"),
-            };
+        //public IActionResult Authenticate()
+        //{
+        //    var appClaims = new List<Claim>()
+        //    {
+        //        new Claim(ClaimTypes.Name, "Igor"),
+        //        new Claim(ClaimTypes.Email, "igor@igor.pl"),
+        //        new Claim("App.Says", "Welcome, Igor. You're verified"),
+        //    };
             
-            var licenseClaims = new List<Claim>()
-            {
-                new Claim(ClaimTypes.Name, "Igor D."),
-                new Claim("Security", "Welcome, Igor D."),
-            };
+        //    var licenseClaims = new List<Claim>()
+        //    {
+        //        new Claim(ClaimTypes.Name, "Igor D."),
+        //        new Claim("Security", "Welcome, Igor D."),
+        //    };
 
-            var appIdentity = new ClaimsIdentity(appClaims, "App Identity");
-            var licenseIdentity = new ClaimsIdentity(licenseClaims, "Security");
+        //    var appIdentity = new ClaimsIdentity(appClaims, "App Identity");
+        //    var licenseIdentity = new ClaimsIdentity(licenseClaims, "Security");
 
-            var userPrincipal = new ClaimsPrincipal(new[] { appIdentity, licenseIdentity });
+        //    var userPrincipal = new ClaimsPrincipal(new[] { appIdentity, licenseIdentity });
 
-            HttpContext.SignInAsync(userPrincipal);
+        //    HttpContext.SignInAsync(userPrincipal);
 
 
+        //    return RedirectToAction("Index");
+        //}
+
+        public IActionResult Login()
+        {
+            return View();
+        }
+        
+        public IActionResult Login(string username, string password)
+        {
+            return RedirectToAction("Index");
+        }
+        
+        public IActionResult Register()
+        {
+            return View();
+        }
+        
+        public IActionResult Register(string username, string password)
+        {
             return RedirectToAction("Index");
         }
     }

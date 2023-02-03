@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace MvcCore.Models
 {
-    public class TaskManagerContext : DbContext
+    public class TaskManagerContext : IdentityDbContext
     {
         public TaskManagerContext(DbContextOptions<TaskManagerContext> options) : base(options)
         {
