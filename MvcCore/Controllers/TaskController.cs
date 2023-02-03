@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MvcCore.Models;
 using MvcCore.Repositories;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 
 namespace MvcCore.Controllers
 {
@@ -20,6 +23,7 @@ namespace MvcCore.Controllers
             return View(_taskRepository.GetAllActive());
         }
 
+        [Authorize]
         // GET: Task/Details/5
         public ActionResult Details(int id)
         {
@@ -83,6 +87,32 @@ namespace MvcCore.Controllers
             _taskRepository.Update(id, task);
 
             return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Authenticate()
+        {
+            var appClaims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.Name, "Igor"),
+                new Claim(ClaimTypes.Email, "igor@igor.pl"),
+                new Claim("App.Says", "Welcome, Igor. You're verified"),
+            };
+            
+            var licenseClaims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.Name, "Igor D."),
+                new Claim("Security", "Welcome, Igor D."),
+            };
+
+            var appIdentity = new ClaimsIdentity(appClaims, "App Identity");
+            var licenseIdentity = new ClaimsIdentity(appClaims, "Security");
+
+            var userPrincipal = new ClaimsPrincipal(new[] { appIdentity, licenseIdentity });
+
+            HttpContext.SignInAsync(userPrincipal);
+
+
+            return RedirectToAction("Index");
         }
     }
 }

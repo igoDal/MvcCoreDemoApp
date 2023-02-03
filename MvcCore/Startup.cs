@@ -36,6 +36,13 @@ namespace MvcCore
 
             services.AddTransient<ITaskRepository, TaskRepository>();
 
+            services.AddAuthentication("CookieAuth")
+                .AddCookie("CookieAuth", config =>
+                {
+                    config.Cookie.Name = "Identity.Cookie";
+                    config.Cookie.Name = "/Task/Authenticate";
+                });
+
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<TaskManagerContext>();
             services.AddRazorPages();
@@ -64,7 +71,7 @@ namespace MvcCore
             app.UseRouting();
 
             app.UseAuthentication();
-            //app.UseAuthorization();
+            app.UseAuthorization();
 
 
             app.UseEndpoints(endpoints =>
