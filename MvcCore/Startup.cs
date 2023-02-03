@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.InMemory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -29,19 +30,27 @@ namespace MvcCore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
-            services.AddDbContext<TaskManagerContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("TaskManagerDatabase")));
-
-            services.AddTransient<ITaskRepository, TaskRepository>();
-
             services.AddAuthentication("CookieAuth")
                 .AddCookie("CookieAuth", config =>
                 {
                     config.Cookie.Name = "Identity.Cookie";
                     config.Cookie.Name = "/Task/Authenticate";
                 });
+
+            services.AddControllersWithViews();
+            //services.AddDbContext<TaskManagerContext>(options =>
+            //    options.UseSqlServer(
+            //        Configuration.GetConnectionString("TaskManagerDatabase")));
+
+            //-- Temporary For Authentication -- START
+            services.AddDbContext<TaskManagerContext>(config =>
+            {
+                config.UseInMemoryDatabase("Memory");
+            });
+            //-- END
+
+            services.AddTransient<ITaskRepository, TaskRepository>();
+
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<TaskManagerContext>();

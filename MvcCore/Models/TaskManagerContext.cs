@@ -4,7 +4,7 @@ namespace MvcCore.Models
 {
     public class TaskManagerContext : DbContext
     {
-        public TaskManagerContext(DbContextOptions options) : base(options)
+        public TaskManagerContext(DbContextOptions<TaskManagerContext> options) : base(options)
         {
         }
 

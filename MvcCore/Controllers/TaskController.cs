@@ -105,7 +105,7 @@ namespace MvcCore.Controllers
             };
 
             var appIdentity = new ClaimsIdentity(appClaims, "App Identity");
-            var licenseIdentity = new ClaimsIdentity(appClaims, "Security");
+            var licenseIdentity = new ClaimsIdentity(licenseClaims, "Security");
 
             var userPrincipal = new ClaimsPrincipal(new[] { appIdentity, licenseIdentity });
 
