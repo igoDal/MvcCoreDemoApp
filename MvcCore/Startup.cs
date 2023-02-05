@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -8,12 +9,16 @@ using Microsoft.EntityFrameworkCore.InMemory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MvcCore.AuthorizationRequirements;
 using MvcCore.Models;
 using MvcCore.Repositories;
+using NETCore.MailKit.Extensions;
+using NETCore.MailKit.Infrastructure.Internal;
 using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace MvcCore
@@ -30,13 +35,6 @@ namespace MvcCore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication("CookieAuth")
-                .AddCookie("CookieAuth", config =>
-                {
-                    config.Cookie.Name = "Identity.Cookie";
-                    config.Cookie.Name = "/Task/Authenticate";
-                });
-
             services.AddControllersWithViews();
             //services.AddDbContext<TaskManagerContext>(options =>
             //    options.UseSqlServer(
@@ -48,9 +46,48 @@ namespace MvcCore
                 config.UseInMemoryDatabase("Memory");
             });
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<IdentityUser, IdentityRole>(config =>
+            {
+                config.Password.RequireNonAlphanumeric = false;
+                config.Password.RequiredLength = 3;
+                config.Password.RequireDigit = false;
+                config.Password.RequireUppercase = false;
+                config.SignIn.RequireConfirmedEmail = true;
+            })
                 .AddEntityFrameworkStores<TaskManagerContext>()
                 .AddDefaultTokenProviders();
+
+            services.ConfigureApplicationCookie(config =>
+            {
+                config.Cookie.Name = "Identity.Cookie";
+                config.LoginPath = "/Task/Login";
+            });
+            var mailKitOptions = Configuration.GetSection("Email").Get<MailKitOptions>();
+
+            services.AddMailKit(config => config.UseMailKit(mailKitOptions));
+
+            services.AddAuthorization(config =>
+            {
+                //var defaultAuthBuilder = new AuthorizationPolicyBuilder();
+                //var defaultAuthPolicy = defaultAuthBuilder
+                //.RequireAuthenticatedUser()
+                //.RequireClaim(ClaimTypes.DateOfBirth)
+                //.Build();
+
+                //config.DefaultPolicy = defaultAuthPolicy;
+
+                //config.AddPolicy("Claim.DoB", policyBuilder =>
+                //{
+                //    policyBuilder.RequireClaim(ClaimTypes.DateOfBirth);
+                //});
+                
+                config.AddPolicy("Claim.DoB", policyBuilder =>
+                {
+                    policyBuilder.RequireCustomClaim(ClaimTypes.DateOfBirth);
+                });
+            });
+
+            services.AddScoped<IAuthorizationHandler, CustomRequireClaimHandler>();
 
             //-- END
 
@@ -93,6 +130,9 @@ namespace MvcCore
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Task}/{action=Index}/{id?}");
+
+                //endpoints.MapDefaultControllerRoute();
+
                 endpoints.MapRazorPages();
             });
         }
