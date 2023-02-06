@@ -39,12 +39,6 @@ namespace MvcCore
                 options.UseSqlServer(
                     Configuration.GetConnectionString("TaskManagerDatabase")));
 
-            //-- Temporary For Authentication -- START
-            //services.AddDbContext<TaskManagerContext>(config =>
-            //{
-            //    config.UseInMemoryDatabase("Memory");
-            //});
-
             services.AddIdentity<IdentityUser, IdentityRole>(config =>
             {
                 config.Password.RequireNonAlphanumeric = false;
@@ -67,19 +61,6 @@ namespace MvcCore
 
             services.AddAuthorization(config =>
             {
-                //var defaultAuthBuilder = new AuthorizationPolicyBuilder();
-                //var defaultAuthPolicy = defaultAuthBuilder
-                //.RequireAuthenticatedUser()
-                //.RequireClaim(ClaimTypes.DateOfBirth)
-                //.Build();
-
-                //config.DefaultPolicy = defaultAuthPolicy;
-
-                //config.AddPolicy("Claim.DoB", policyBuilder =>
-                //{
-                //    policyBuilder.RequireClaim(ClaimTypes.DateOfBirth);
-                //});
-                
                 config.AddPolicy("Claim.DoB", policyBuilder =>
                 {
                     policyBuilder.RequireCustomClaim(ClaimTypes.DateOfBirth);
@@ -88,13 +69,8 @@ namespace MvcCore
 
             services.AddScoped<IAuthorizationHandler, CustomRequireClaimHandler>();
 
-            //-- END
-
             services.AddTransient<ITaskRepository, TaskRepository>();
 
-
-            //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-            //    .AddEntityFrameworkStores<TaskManagerContext>();
             services.AddRazorPages()
                 .AddRazorPagesOptions(config =>
                 {
@@ -131,8 +107,6 @@ namespace MvcCore
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Task}/{action=Index}/{id?}");
-
-                //endpoints.MapDefaultControllerRoute();
 
                 endpoints.MapRazorPages();
             });
