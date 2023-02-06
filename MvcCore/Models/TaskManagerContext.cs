@@ -10,7 +10,5 @@ namespace MvcCore.Models
         }
 
         public DbSet<TaskModel> Tasks { get; set; }
-
-
     }
 }
