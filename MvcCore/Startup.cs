@@ -96,7 +96,11 @@ namespace MvcCore
 
             //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<TaskManagerContext>();
-            services.AddRazorPages();
+            services.AddRazorPages()
+                .AddRazorPagesOptions(config =>
+                {
+                    config.Conventions.AuthorizePage("/Razor/SecuredPage");
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
