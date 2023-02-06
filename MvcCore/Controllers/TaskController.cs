@@ -20,12 +20,6 @@ namespace MvcCore.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
-        //public TaskController(ITaskRepository taskRepository)
-        //{
-        //    _taskRepository = taskRepository;
-        //}
-
-        //constructor for inMemoryDb
         public TaskController(UserManager<IdentityUser> userManager, 
             SignInManager<IdentityUser> signInManager, 
             ITaskRepository taskRepository,
@@ -114,32 +108,6 @@ namespace MvcCore.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
-        //public IActionResult Authenticate()
-        //{
-        //    var appClaims = new List<Claim>()
-        //    {
-        //        new Claim(ClaimTypes.Name, "Igor"),
-        //        new Claim(ClaimTypes.Email, "igor@igor.pl"),
-        //        new Claim("App.Says", "Welcome, Igor. You're verified"),
-        //    };
-            
-        //    var licenseClaims = new List<Claim>()
-        //    {
-        //        new Claim(ClaimTypes.Name, "Igor D."),
-        //        new Claim("Security", "Welcome, Igor D."),
-        //    };
-
-        //    var appIdentity = new ClaimsIdentity(appClaims, "App Identity");
-        //    var licenseIdentity = new ClaimsIdentity(licenseClaims, "Security");
-
-        //    var userPrincipal = new ClaimsPrincipal(new[] { appIdentity, licenseIdentity });
-
-        //    HttpContext.SignInAsync(userPrincipal);
-
-
-        //    return RedirectToAction("Index");
-        //}
 
         public IActionResult Login()
         {
