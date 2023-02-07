@@ -7,6 +7,8 @@ using MvcCore.Models;
 using MvcCore.Repositories;
 using NETCore.MailKit.Core;
 using System.Collections.Generic;
+using System.IO;
+using System.Web;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -19,6 +21,7 @@ namespace MvcCore.Controllers
         private readonly IEmailService _emailService;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        public IFormFile File { get; set; }
 
         public TaskController(UserManager<IdentityUser> userManager, 
             SignInManager<IdentityUser> signInManager, 
@@ -55,6 +58,13 @@ namespace MvcCore.Controllers
         {
             return View(new TaskModel());
         }
+        
+        // GET: Task/Import
+        public ActionResult Import()
+        {
+            //code here
+            return View();
+        }
 
         // POST: Task/Create
         [HttpPost]
@@ -64,6 +74,18 @@ namespace MvcCore.Controllers
             _taskRepository.Add(taskModel);
 
             return RedirectToAction(nameof(Index));
+            
+        }
+
+        // POST: Task/Import
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Import(string file)
+        {
+            UploadFile();
+           
+
+            return RedirectToAction("Index");
             
         }
 
@@ -183,6 +205,25 @@ namespace MvcCore.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index");
+        }
+
+        public IActionResult UploadFile()
+        {
+            using (var streamReader = new StreamReader(File.OpenReadStream()))
+            {
+                while (!streamReader.EndOfStream)
+                {
+                    var lineRead = streamReader.ReadLine();
+
+                    var splitLines = lineRead.Split(';');
+                    var newTaskName = splitLines[0];
+                    var newTaskDesc = splitLines[1];
+
+                    var task = new TaskModel { Name = newTaskName, Description = newTaskDesc };
+                    _taskRepository.Add(task);
+                }
+            }
+            return View();
         }
     }
 }

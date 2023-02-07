@@ -1,0 +1,28 @@
+﻿@model MvcCore.Models.TaskModel
+
+@{
+    ViewData["Title"] = "Add new task";
+}
+
+<h1>Import</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="file">Select a file:</label>
+                <input type="file" class="form-control-file" id="file" name="file">
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to task list</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
