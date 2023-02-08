@@ -4,7 +4,7 @@
     ViewData["Title"] = "Add new task";
 }
 
-<h1>Login</h1>
+<h1>Register new account</h1>
 
 <hr />
 <div class="row">
@@ -12,17 +12,20 @@
         <form action="/Task/Register" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="username">Enter username:</label>
-                <input type="text" name="username" value="" />
+                <input type="text" name="username" value="" class="form-control"/>
+            </div> 
+            <div class="form-group">
                 <label for="password">Enter password:</label>
-                <input type="text" name="password" value="" />
-                
+                <input type="password" name="password" value="" class="form-control" />
             </div>
             <button type="submit">Register</button>
             <label> </label>
         </form>
         <form action="/Task/Login" method ="get" enctype="multipart/form-data">
             <div class="form-group">
-                <label for="Login">Already have account?</label>
+                <label style="margin-top: 60px;" for="Login">Already have an account?</label>
+            </div>
+            <div>
                 <button type="submit">Login</button>
             </div>
         </form>
