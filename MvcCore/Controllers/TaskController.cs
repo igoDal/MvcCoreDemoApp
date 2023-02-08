@@ -225,5 +225,14 @@ namespace MvcCore.Controllers
             }
             return View();
         }
+
+        public ActionResult GoToLoginView()
+        {
+            return View(nameof(Login));
+        }
+        public ActionResult GoToRegisterView()
+        {
+            return View(nameof(Register));
+        }
     }
 }
