@@ -1,13 +1,34 @@
-﻿<h1>Login Page</h1>
+﻿@model MvcCore.Models.TaskModel
 
-<form action ="/Task/Login" method="post">
-	<input type="text" name="username" value="" />	
-	<input type="text" name="password" value="" />	
-	<button type="submit">Login</button>
+@{
+    ViewData["Title"] = "Add new task";
+}
 
-</form>
+<h1>Login</h1>
 
-
-<div>
-    <a asp-action="Register">Register</a>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form action="/Task/Login" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="username">Enter username:</label>
+                <input type="text" name="username" value="" />
+                <label for="password">Enter password:</label>
+                <input type="text" name="password" value="" />
+                
+            </div>
+            <button type="submit">Login</button>
+            
+        </form>
+        <form action="/Task/Register" method ="get" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="Register">Doesn't have account?</label>
+                <button style="text-align: right" type="submit">Register</button>
+            </div>
+        </form>
+    </div>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
