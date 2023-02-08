@@ -34,13 +34,14 @@ namespace MvcCore.Controllers
             _emailService = emailService;
         }
 
+        [Authorize]
         // GET: Task
         public ActionResult Index()
         {
             return View(_taskRepository.GetAllActive());
         }
 
-        [Authorize]
+        
         // GET: Task/Details/5
         public ActionResult Details(int id)
         {
