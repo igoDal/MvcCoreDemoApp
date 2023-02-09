@@ -41,10 +41,21 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.ActionLink("Done", "Done", new { id=item.TaskId }) |
-                @Html.ActionLink("Edit", "Edit", new { id=item.TaskId }) |
-                @Html.ActionLink("Details", "Details", new { id=item.TaskId }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.TaskId  }) |
+                <div style="display: flex;">
+                    @Html.ActionLink("Done", "Done", new { id=item.TaskId }) &nbsp;
+                    @Html.ActionLink("Edit", "Edit", new { id=item.TaskId }) &nbsp;
+                        @if (User.IsInRole("Viewer"))
+                        {
+                            @Html.ActionLink("Details", "Details", new { id=item.TaskId })
+
+                        } &nbsp;
+                        <div class="control-to-hide">
+                            <Authorize Policy="AdminPolicy">
+                                @Html.ActionLink("Delete", "Delete", new { id = item.TaskId })
+                            </Authorize>
+                        </div>
+
+                </div>
             </td>
         </tr>
 }

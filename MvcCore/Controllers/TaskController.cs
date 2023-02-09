@@ -12,6 +12,7 @@ using System.Web;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System;
 
 namespace MvcCore.Controllers
 {
@@ -38,10 +39,11 @@ namespace MvcCore.Controllers
         // GET: Task
         public ActionResult Index()
         {
+            CheckUser();
             return View(_taskRepository.GetAllActive());
         }
 
-        [Authorize(Roles ="Admin")]
+        [Authorize(Policy = "Viewer")]
         // GET: Task/Details/5
         public ActionResult Details(int id)
         {
@@ -234,6 +236,17 @@ namespace MvcCore.Controllers
         public ActionResult GoToRegisterView()
         {
             return View(nameof(Register));
+        }
+
+        public void CheckUser()
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claims = claimsIdentity.Claims;
+            foreach (var claim in claims)
+            {
+                Console.WriteLine("Claim Type: {0}", claim.Type);
+                Console.WriteLine("Claim Value: {0}", claim.Value);
+            }
         }
 
         

@@ -62,9 +62,13 @@ namespace MvcCore
 
             services.AddAuthorization(config =>
             {
-                config.AddPolicy("Claim.DoB", policyBuilder =>
+                config.AddPolicy("Viewer", policyBuilder =>
                 {
-                    policyBuilder.RequireCustomClaim(ClaimTypes.DateOfBirth);
+                    policyBuilder.RequireRole("Viewer");
+                });
+                config.AddPolicy("AdminPolicy", policyBuilder =>
+                {
+                    policyBuilder.RequireRole("Admin");
                 });
             });
 
