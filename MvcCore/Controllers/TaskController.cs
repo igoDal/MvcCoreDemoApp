@@ -41,7 +41,7 @@ namespace MvcCore.Controllers
             return View(_taskRepository.GetAllActive());
         }
 
-        
+        [Authorize(Roles ="Admin")]
         // GET: Task/Details/5
         public ActionResult Details(int id)
         {
@@ -235,5 +235,7 @@ namespace MvcCore.Controllers
         {
             return View(nameof(Register));
         }
+
+        
     }
 }
