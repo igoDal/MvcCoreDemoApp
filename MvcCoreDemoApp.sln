@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32414.318
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcCore", "MvcCore\MvcCore.csproj", "{A1C78F6D-05E4-4C3D-AE85-CC4D2F7253F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcCore", "MvcCore\MvcCore.csproj", "{A1C78F6D-05E4-4C3D-AE85-CC4D2F7253F2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "oauth", "oauth", "{C8C58345-95AF-4A4D-9A42-234C4C069EC0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MvcCoreBasic", "MvcCoreBasic", "{6A7EAF52-85AC-4192-8A47-AC50B825472C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{5E95AD77-9E62-4554-B1F7-2FC26513F4CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +21,17 @@ Global
 		{A1C78F6D-05E4-4C3D-AE85-CC4D2F7253F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1C78F6D-05E4-4C3D-AE85-CC4D2F7253F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1C78F6D-05E4-4C3D-AE85-CC4D2F7253F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E95AD77-9E62-4554-B1F7-2FC26513F4CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E95AD77-9E62-4554-B1F7-2FC26513F4CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E95AD77-9E62-4554-B1F7-2FC26513F4CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E95AD77-9E62-4554-B1F7-2FC26513F4CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A1C78F6D-05E4-4C3D-AE85-CC4D2F7253F2} = {6A7EAF52-85AC-4192-8A47-AC50B825472C}
+		{5E95AD77-9E62-4554-B1F7-2FC26513F4CD} = {C8C58345-95AF-4A4D-9A42-234C4C069EC0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {674F316D-F5D6-45C8-A1DA-12114F0D5E52}

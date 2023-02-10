@@ -1,14 +1,20 @@
-﻿using MvcCore.Models;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using MvcCore.Models;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MvcCore.Repositories
 {
     public class TaskRepository : ITaskRepository
     {
         private readonly TaskManagerContext _context;
+
+
         public TaskRepository(TaskManagerContext context)
         {
             _context = context;
+
         }
 
         public TaskModel Get(int taskId)
@@ -42,5 +48,27 @@ namespace MvcCore.Repositories
                 _context.SaveChanges();
             }
         }
+
+        //public async Task AddUserToRoleAsync(string userId, string roleName)
+        //{
+        //    var user = await _userManager.FindByIdAsync(userId);
+
+        //    var role = await _roleManager.FindByNameAsync(roleName);
+
+        //    var tryAddToRole = await _userManager.AddToRoleAsync(user, roleName);
+        //    if (!tryAddToRole.Succeeded)
+        //    {
+        //        throw new System.Exception("Couldn't add user to role");
+        //    }
+
+        //    var userRole = new IdentityUserRole<string>
+        //    {
+        //        UserId = user.Id,
+        //        RoleId = role.Id
+        //    };
+
+        //    _context.AspNetUserRole.Add(userRole);
+        //    await _context.SaveChangesAsync();
+        //}
     }
 }
